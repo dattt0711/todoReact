@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TodoList from './component/todoList/index'
+import './style.scss';
 class TodoFeature extends Component {
     constructor(props) {
         super(props);
@@ -20,8 +21,16 @@ class TodoFeature extends Component {
                     title: 'sleep',
                     status: "completed"
                 },
+                {
+                    id: 4,
+                    title: 'dating',
+                    status: "new"
+                },
+                
             ],
-            filterStatus: 'All'
+            filterStatus: 'All',
+            todoInput: '',
+            id: 5,
         }
     }
     // handle change status
@@ -53,22 +62,76 @@ class TodoFeature extends Component {
     handleShowNew = () =>{
         this.setState({filterStatus: 'new'})
     }
+
+
+    //set state when user change input
+    handleTodoInput = (input) =>{
+        console.log(input)
+        this.setState({todoInput: input})
+    }
+
+    // handle when click add button
+    handleClickAdd = ()=> {
+        //clone current todo list
+        const newTodoList = [...this.state.todoList];
+        console.log(this)
+        //add new todo
+        newTodoList.push({
+            title: this.state.todoInput,
+            id: this.state.id,
+            status: "new",
+        })
+        // update todolist, id and clear input
+        this.setState({ 
+            id:this.state.id+1,
+            todoList: newTodoList,
+            todoInput: '',
+        })
+ 
+    }
+    //handle remove
+    handleClickRemove = (index)=> {
+        //clone current todo list
+        const newTodoList = [...this.state.todoList];
+        console.log(this)
+        //remove
+        newTodoList.splice(index,1);
+        // update todolist, id and clear input
+        this.setState({ 
+            todoList: newTodoList,
+        })
+ 
+    }
+    //handle update 
+    handleClickUpdate = (index, newTitle) => {
+        //clone current todo list
+        const newTodoList = [...this.state.todoList];
+        //update   
+        newTodoList[index] = {
+            ...newTodoList[index],
+            title: newTitle,
+        }
+        // set state       
+        this.setState({todoList: newTodoList})
+    }
     render() {
         const renderedTodoList = this.state.todoList.filter(todo =>
             this.state.filterStatus === 'All'
             || this.state.filterStatus === todo.status)
         return (
-            <>
-            <div>
-                <h3>To do list</h3>
-                <TodoList todoList={renderedTodoList} onTodoClick={this.handleTodoClick}/>
+            <div className="todo">
+            <div className="todo__heading">
+                <h3 >Todo list</h3>
+                <input onChange={(e)=>this.handleTodoInput(e.target.value)} placeholder="add new todo" value={this.state.todoInput}></input>
+                <a className="btn" onClick={()=>this.handleClickAdd()}>Create task</a>
             </div>
-            <div>
-                <button onClick={()=>this.handleShowAll()}>Show all</button>
-                <button onClick={()=>this.handleShowCompleted()}>Show Completed</button>
-                <button onClick={()=>this.handleShowNew()}>Show New</button>
+            <TodoList className="todo__list" todoList={renderedTodoList} onTodoClick={this.handleTodoClick} onRemoveClick={this.handleClickRemove} onUpdateClick={this.handleClickUpdate}/>
+            <div className="todo__btn-show">
+                <button className="btn" onClick={()=>this.handleShowAll()}>Show all</button>
+                <button className="btn" onClick={()=>this.handleShowCompleted()}>Show Completed</button>
+                <button className="btn" onClick={()=>this.handleShowNew()}>Show New</button>
             </div>
-            </>
+            </div>
         );
     }
 }

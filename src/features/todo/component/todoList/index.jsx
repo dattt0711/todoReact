@@ -1,21 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './style.scss';
 
 
-function TodoList({todoList, onTodoClick}) {
+function TodoList({todoList, onTodoClick, onRemoveClick, onUpdateClick}) {
     const handleClick = (todo, index)=>{
         if(!onTodoClick) return;
         return onTodoClick(todo, index)
     }
+    const handleUpdate = (index, title) =>{
+        if(!onUpdateClick) return;
+        let newTitle = prompt("Please enter your new title: ")
+        title = (newTitle == null || newTitle == "") ? title : newTitle;
+        return onUpdateClick(index, title);
+    }
     return (
-        <ul className="todo-list">
+        <ul className="todo__list">
             {todoList.map((todo,index) => (
                 <li
                     onClick={()=>handleClick(todo, index)}
-                    className={`${(todo.status=='completed')?"completed":""}`}
+                    className={`todo__item-wrapper ${(todo.status=='completed')?"completed":""}`}
                     key={todo.id}>
-                    {todo.title}
+                <div className="todo__item">
+                <p className="todo__title">{todo.title}</p> 
+                <div className="item__function">   
+                <button className="btn btn--remove" onClick={()=> onRemoveClick(index)}>
+                    Remove
+                </button>
+                <button className="btn btn--update" onClick={()=>handleUpdate(index, todo.title)}>Update</button>
+                </div>
+                </div>   
                 </li>
             ))}
         </ul>
