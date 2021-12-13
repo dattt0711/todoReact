@@ -93,9 +93,9 @@ class TodoFeature extends Component {
     handleClickRemove = (index)=> {
         //clone current todo list
         const newTodoList = [...this.state.todoList];
-        console.log(this)
         //remove
         newTodoList.splice(index,1);
+        console.log(newTodoList)
         // update todolist, id and clear input
         this.setState({ 
             todoList: newTodoList,
@@ -104,13 +104,13 @@ class TodoFeature extends Component {
     }
     //handle update 
     handleClickUpdate = (index, newTitle) => {
-        //clone current todo list
         const newTodoList = [...this.state.todoList];
         //update   
         newTodoList[index] = {
             ...newTodoList[index],
             title: newTitle,
         }
+        console.log(newTodoList)
         // set state       
         this.setState({todoList: newTodoList})
     }

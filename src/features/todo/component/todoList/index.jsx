@@ -16,12 +16,11 @@ function TodoList({todoList, onTodoClick, onRemoveClick, onUpdateClick}) {
     return (
         <ul className="todo__list">
             {todoList.map((todo,index) => (
-                <li
-                    onClick={()=>handleClick(todo, index)}
+                <li     
                     className={`todo__item-wrapper ${(todo.status=='completed')?"completed":""}`}
                     key={todo.id}>
                 <div className="todo__item">
-                <p className="todo__title">{todo.title}</p> 
+                <p onClick={()=>handleClick(todo, index)} className="todo__title">{todo.title}</p> 
                 <div className="item__function">   
                 <button className="btn btn--remove" onClick={()=> onRemoveClick(index)}>
                     Remove
