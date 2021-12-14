@@ -1,42 +1,37 @@
-import React, { Component } from 'react';
+import React,{useState} from 'react';
 import validator from 'validator';
-class Form extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            email: '',
-        }
-    }
-    handleSubmit = (event) => {
+function Form(props) {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const handleSubmit = (event) => {
         event.preventDefault();
-        if(this.state.username=='' || this.state.email=='') alert('All fields must be required')
-        else if(!validator.isEmail(this.state.email)) alert('Email is invalid')
-        else return this.props.isLogin(this.state);
+        if(username=='' || email=='') alert('All fields must be required')
+        else if(!validator.isEmail(email)) alert('Email is invalid')
+        else return props.isLogin({username, email});
     }
-    handleUsername = (event) =>{
+    const handleUsername = (event) =>{
         console.log(event.target.value);
-        this.setState({username: event.target.value});
+        setUsername(event.target.value);
     }
-    handleEmail = (event) =>{
+    const handleEmail = (event) =>{
         console.log(event.target.value);
-        this.setState({email: event.target.value});
+        setEmail(event.target.value);
     }
-    render() {
-        return (
-                <form >
+    return (
+        <div>
+            <form >
                     <div>
                         <label htmlFor="username">Username</label>
-                        <input name="username" type="text" onChange={(event)=>this.handleUsername(event)} value={this.state.username}/>
+                        <input name="username" type="text" onChange={(event)=>handleUsername(event)} value={username}/>
                     </div>
                     <div>
                         <label htmlFor="email">Email</label>
-                        <input name="email" type="text" onChange={(event)=>this.handleEmail(event)} value={this.state.email}/>
+                        <input name="email" type="text" onChange={(event)=>handleEmail(event)} value={email}/>
                     </div>
-                    <button onClick={(event)=>this.handleSubmit(event)}>Log In</button>
+                    <button onClick={(event)=>handleSubmit(event)}>Log In</button>
                 </form>
-        );
-    }
+        </div>
+    );
 }
 
 export default Form;
